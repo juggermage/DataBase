@@ -23,7 +23,7 @@ BEGIN
         t.table_number,
         s.name AS status_name,
 
-        -- Розрахунок загальної суми замовлення
+        -- Р РѕР·СЂР°С…СѓРЅРѕРє Р·Р°РіР°Р»СЊРЅРѕС— СЃСѓРјРё Р·Р°РјРѕРІР»РµРЅРЅСЏ
         (
             SELECT SUM(d.price * od.quantity)
             FROM OrderDish od
@@ -64,26 +64,26 @@ BEGIN
 END;
 GO
 
--- 1. Усі замовлення
+-- 1. РЈСЃС– Р·Р°РјРѕРІР»РµРЅРЅСЏ
 EXEC dbo.sp_GetOrders;
 
--- 2. Пошук за частиною імені клієнта
-EXEC dbo.sp_GetOrders @CustomerName = N'Іва';
+-- 2. РџРѕС€СѓРє Р·Р° С‡Р°СЃС‚РёРЅРѕСЋ С–РјРµРЅС– РєР»С–С”РЅС‚Р°
+EXEC dbo.sp_GetOrders @CustomerName = N'Р†РІР°';
 
--- 3. Фільтр по статусу (наприклад 1 = 'Очікує')
+-- 3. Р¤С–Р»СЊС‚СЂ РїРѕ СЃС‚Р°С‚СѓСЃСѓ (РЅР°РїСЂРёРєР»Р°Рґ 1 = 'РћС‡С–РєСѓС”')
 EXEC dbo.sp_GetOrders @StatusId = 1;
 
--- 4. Фільтр по діапазону дат
+-- 4. Р¤С–Р»СЊС‚СЂ РїРѕ РґС–Р°РїР°Р·РѕРЅСѓ РґР°С‚
 EXEC dbo.sp_GetOrders
     @DateFrom = '2025-10-24', 
     @DateTo   = '2025-10-26';
 
--- 5. Пагінація: друга сторінка, по 5 записів
+-- 5. РџР°РіС–РЅР°С†С–СЏ: РґСЂСѓРіР° СЃС‚РѕСЂС–РЅРєР°, РїРѕ 5 Р·Р°РїРёСЃС–РІ
 EXEC dbo.sp_GetOrders 
     @PageSize = 5,
     @PageNumber = 2;
 
--- 6. Сортування по імені клієнта DESC
+-- 6. РЎРѕСЂС‚СѓРІР°РЅРЅСЏ РїРѕ С–РјРµРЅС– РєР»С–С”РЅС‚Р° DESC
 EXEC dbo.sp_GetOrders 
     @SortColumn = 'customer_name',
     @SortDirection = 1;
@@ -150,29 +150,29 @@ END;
 GO
 
 
--- 1. Усі страви
+-- 1. РЈСЃС– СЃС‚СЂР°РІРё
 EXEC dbo.sp_GetDishes @PageSize = 50;
 
--- 2. Пошук страви за назвою
-EXEC dbo.sp_GetDishes @Name = N'Бур';
+-- 2. РџРѕС€СѓРє СЃС‚СЂР°РІРё Р·Р° РЅР°Р·РІРѕСЋ
+EXEC dbo.sp_GetDishes @Name = N'Р‘СѓСЂ';
 
--- 3. Фільтр по категорії (наприклад 'Основні')
-EXEC dbo.sp_GetDishes @Category = N'Салати';
+-- 3. Р¤С–Р»СЊС‚СЂ РїРѕ РєР°С‚РµРіРѕСЂС–С— (РЅР°РїСЂРёРєР»Р°Рґ 'РћСЃРЅРѕРІРЅС–')
+EXEC dbo.sp_GetDishes @Category = N'РЎР°Р»Р°С‚Рё';
 
--- 4. Фільтр по меню (наприклад menu_id = 2)
+-- 4. Р¤С–Р»СЊС‚СЂ РїРѕ РјРµРЅСЋ (РЅР°РїСЂРёРєР»Р°Рґ menu_id = 2)
 EXEC dbo.sp_GetDishes @MenuId = 2;
 
--- 5. Фільтр по ціновому діапазону
+-- 5. Р¤С–Р»СЊС‚СЂ РїРѕ С†С–РЅРѕРІРѕРјСѓ РґС–Р°РїР°Р·РѕРЅСѓ
 EXEC dbo.sp_GetDishes 
     @PriceFrom = 100, 
     @PriceTo   = 200;
 
--- 6. Сортування по ціні DESC
+-- 6. РЎРѕСЂС‚СѓРІР°РЅРЅСЏ РїРѕ С†С–РЅС– DESC
 EXEC dbo.sp_GetDishes 
     @SortColumn = 'price',
     @SortDirection = 1;
 
--- 7. Пагінація
+-- 7. РџР°РіС–РЅР°С†С–СЏ
 EXEC dbo.sp_GetDishes 
     @PageSize = 3, 
     @PageNumber = 2;
@@ -186,7 +186,7 @@ CREATE OR ALTER PROCEDURE dbo.sp_GetWarehouse
     @PageSize INT = 100,
     @PageNumber INT = 1,
     @SortColumn NVARCHAR(50) = 'delivery_time',
-    @SortDirection BIT = 1  -- нові поставки зверху
+    @SortDirection BIT = 1  -- РЅРѕРІС– РїРѕСЃС‚Р°РІРєРё Р·РІРµСЂС…Сѓ
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -233,35 +233,35 @@ BEGIN
 END;
 GO
 
--- 1. Усі записи складу
+-- 1. РЈСЃС– Р·Р°РїРёСЃРё СЃРєР»Р°РґСѓ
 EXEC dbo.sp_GetWarehouse;
 
--- 2. Пошук по частині назви товару
-EXEC dbo.sp_GetWarehouse @ProductName = N'Сир';
+-- 2. РџРѕС€СѓРє РїРѕ С‡Р°СЃС‚РёРЅС– РЅР°Р·РІРё С‚РѕРІР°СЂСѓ
+EXEC dbo.sp_GetWarehouse @ProductName = N'РЎРёСЂ';
 
--- 3. Фільтр по постачальнику
+-- 3. Р¤С–Р»СЊС‚СЂ РїРѕ РїРѕСЃС‚Р°С‡Р°Р»СЊРЅРёРєСѓ
 EXEC dbo.sp_GetWarehouse @SupplierId = 1;
 
--- 4. Вибірка за періодом поставки
+-- 4. Р’РёР±С–СЂРєР° Р·Р° РїРµСЂС–РѕРґРѕРј РїРѕСЃС‚Р°РІРєРё
 EXEC dbo.sp_GetWarehouse 
     @DateFrom = '2025-10-01',
     @DateTo   = '2025-10-26';
 
--- 5. Пагінація
+-- 5. РџР°РіС–РЅР°С†С–СЏ
 EXEC dbo.sp_GetWarehouse 
     @PageSize = 5,
     @PageNumber = 2;
 
--- 6. Сортування по назві продукту ASC
+-- 6. РЎРѕСЂС‚СѓРІР°РЅРЅСЏ РїРѕ РЅР°Р·РІС– РїСЂРѕРґСѓРєС‚Сѓ ASC
 EXEC dbo.sp_GetWarehouse 
     @SortColumn = 'product_name',
     @SortDirection = 0;
 
 
 CREATE OR ALTER PROCEDURE dbo.sp_GetOrdersRevenue
-    @DateFrom  DATE = NULL,      -- початок періоду
-    @DateTo    DATE = NULL,      -- кінець періоду
-    @StatusId  INT  = NULL       -- статус "оплачене"/"завершене"
+    @DateFrom  DATE = NULL,      -- РїРѕС‡Р°С‚РѕРє РїРµСЂС–РѕРґСѓ
+    @DateTo    DATE = NULL,      -- РєС–РЅРµС†СЊ РїРµСЂС–РѕРґСѓ
+    @StatusId  INT  = NULL       -- СЃС‚Р°С‚СѓСЃ "РѕРїР»Р°С‡РµРЅРµ"/"Р·Р°РІРµСЂС€РµРЅРµ"
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -277,20 +277,20 @@ BEGIN
 END;
 GO
 
--- 1. Увесь дохід з усіх замовлень (без обмежень)
+-- 1. РЈРІРµСЃСЊ РґРѕС…С–Рґ Р· СѓСЃС–С… Р·Р°РјРѕРІР»РµРЅСЊ (Р±РµР· РѕР±РјРµР¶РµРЅСЊ)
 EXEC dbo.sp_GetOrdersRevenue;
 
--- 2. Дохід за січень 2024 року з оплачених замовлень (статус 4 = 'Оплачено')
+-- 2. Р”РѕС…С–Рґ Р·Р° СЃС–С‡РµРЅСЊ 2024 СЂРѕРєСѓ Р· РѕРїР»Р°С‡РµРЅРёС… Р·Р°РјРѕРІР»РµРЅСЊ (СЃС‚Р°С‚СѓСЃ 4 = 'РћРїР»Р°С‡РµРЅРѕ')
 EXEC dbo.sp_GetOrdersRevenue 
     @DateFrom = '2025-10-01',
     @DateTo   = '2025-10-30',
     @StatusId = 4;
 
--- 3. Дохід за поточний рік (будь-який статус)
+-- 3. Р”РѕС…С–Рґ Р·Р° РїРѕС‚РѕС‡РЅРёР№ СЂС–Рє (Р±СѓРґСЊ-СЏРєРёР№ СЃС‚Р°С‚СѓСЃ)
 EXEC dbo.sp_GetOrdersRevenue 
     @DateFrom = '2024-01-01',
     @DateTo   = '2024-12-31';
 
--- 4. Дохід тільки по оплачених замовленнях без обмеження по даті
+-- 4. Р”РѕС…С–Рґ С‚С–Р»СЊРєРё РїРѕ РѕРїР»Р°С‡РµРЅРёС… Р·Р°РјРѕРІР»РµРЅРЅСЏС… Р±РµР· РѕР±РјРµР¶РµРЅРЅСЏ РїРѕ РґР°С‚С–
 EXEC dbo.sp_GetOrdersRevenue 
     @StatusId = 4;

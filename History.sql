@@ -13,20 +13,20 @@ GO
 
 
 UPDATE Employee
-SET name = 'Аліна Сидоренко'
+SET name = 'РђР»С–РЅР° РЎРёРґРѕСЂРµРЅРєРѕ'
 WHERE employee_id = 1;
 
 SELECT * FROM Employee FOR SYSTEM_TIME ALL WHERE employee_id = 1;
 
 UPDATE Employee
-SET name = 'Петренко Іван'
+SET name = 'РџРµС‚СЂРµРЅРєРѕ Р†РІР°РЅ'
 WHERE employee_id = 4;
 
 UPDATE Employee
 SET contact_phone = '+380999999999'
 WHERE employee_id = 4;
 
--- Показати стан таблиці на будь-яку дату в минулому
+-- РџРѕРєР°Р·Р°С‚Рё СЃС‚Р°РЅ С‚Р°Р±Р»РёС†С– РЅР° Р±СѓРґСЊ-СЏРєСѓ РґР°С‚Сѓ РІ РјРёРЅСѓР»РѕРјСѓ
 SELECT * FROM Employee
 FOR SYSTEM_TIME AS OF '2025-11-24 21:10:00'
 WHERE employee_id = 4;
@@ -57,16 +57,16 @@ SET price = price - 20
 WHERE dish_id = 11;
 
 UPDATE Dish
-SET category = 'Десерт дня'
+SET category = 'Р”РµСЃРµСЂС‚ РґРЅСЏ'
 WHERE dish_id = 11;
 
--- Показати, як змінювалась ціна страви з часом
+-- РџРѕРєР°Р·Р°С‚Рё, СЏРє Р·РјС–РЅСЋРІР°Р»Р°СЃСЊ С†С–РЅР° СЃС‚СЂР°РІРё Р· С‡Р°СЃРѕРј
 SELECT name, price, ValidFrom, ValidTo FROM Dish
 FOR SYSTEM_TIME ALL
 WHERE dish_id = 11
 ORDER BY ValidFrom;
 
--- Показати стан таблиці на будь-яку дату в минулому
+-- РџРѕРєР°Р·Р°С‚Рё СЃС‚Р°РЅ С‚Р°Р±Р»РёС†С– РЅР° Р±СѓРґСЊ-СЏРєСѓ РґР°С‚Сѓ РІ РјРёРЅСѓР»РѕРјСѓ
 SELECT *
 FROM Dish
 FOR SYSTEM_TIME AS OF '2025-11-24 21:10:00'

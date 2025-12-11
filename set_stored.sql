@@ -11,18 +11,18 @@ BEGIN
     SET NOCOUNT ON;
 
     BEGIN TRY
-        -- Перевірка при вставці
+        -- РџРµСЂРµРІС–СЂРєР° РїСЂРё РІСЃС‚Р°РІС†С–
         IF @dish_id IS NULL
         BEGIN
             IF (@name IS NULL OR LTRIM(RTRIM(@name)) = '')
             BEGIN
-                RAISERROR(N'Назва страви є обов''язковою.', 16, 1);
+                RAISERROR(N'РќР°Р·РІР° СЃС‚СЂР°РІРё С” РѕР±РѕРІ''СЏР·РєРѕРІРѕСЋ.', 16, 1);
                 RETURN;
             END;
 
             IF (@price IS NULL OR @price <= 0)
             BEGIN
-                RAISERROR(N'Ціна страви має бути додатною.', 16, 1);
+                RAISERROR(N'Р¦С–РЅР° СЃС‚СЂР°РІРё РјР°С” Р±СѓС‚Рё РґРѕРґР°С‚РЅРѕСЋ.', 16, 1);
                 RETURN;
             END;
 
@@ -42,7 +42,7 @@ BEGIN
             WHERE dish_id = @dish_id;
 
             IF @@ROWCOUNT = 0
-                RAISERROR(N'Страву з таким ID не знайдено.', 16, 1);
+                RAISERROR(N'РЎС‚СЂР°РІСѓ Р· С‚Р°РєРёРј ID РЅРµ Р·РЅР°Р№РґРµРЅРѕ.', 16, 1);
         END
     END TRY
     BEGIN CATCH
@@ -51,20 +51,20 @@ BEGIN
 END;
 GO
 
--- Додавання нової страви
+-- Р”РѕРґР°РІР°РЅРЅСЏ РЅРѕРІРѕС— СЃС‚СЂР°РІРё
 DECLARE @NewDishId INT;
 
 EXEC dbo.sp_SetDish
     @dish_id     = @NewDishId OUTPUT,
-    @name        = N'Тестова страва',
-    @description = N'Опис тестової страви',
+    @name        = N'РўРµСЃС‚РѕРІР° СЃС‚СЂР°РІР°',
+    @description = N'РћРїРёСЃ С‚РµСЃС‚РѕРІРѕС— СЃС‚СЂР°РІРё',
     @price       = 199.99,
-    @category    = N'Основна страва',
+    @category    = N'РћСЃРЅРѕРІРЅР° СЃС‚СЂР°РІР°',
     @menu_id     = 4;
 
 SELECT @NewDishId AS NewDishId;
 
--- Оновлення страви (зміна ціни)
+-- РћРЅРѕРІР»РµРЅРЅСЏ СЃС‚СЂР°РІРё (Р·РјС–РЅР° С†С–РЅРё)
 DECLARE @NewDishId INT = 23;
 EXEC dbo.sp_SetDish
     @dish_id = @NewDishId OUTPUT,
@@ -89,7 +89,7 @@ BEGIN
     BEGIN TRY
         IF @order_id IS NULL
         BEGIN
-            -- Перевірки для вставки
+            -- РџРµСЂРµРІС–СЂРєРё РґР»СЏ РІСЃС‚Р°РІРєРё
             IF @order_date IS NULL
                 SET @order_date = CAST(GETDATE() AS DATE);
 
@@ -98,7 +98,7 @@ BEGIN
 
             IF (@people_count IS NULL OR @people_count <= 0)
             BEGIN
-                RAISERROR(N'Кількість гостей має бути більшою за нуль.', 16, 1);
+                RAISERROR(N'РљС–Р»СЊРєС–СЃС‚СЊ РіРѕСЃС‚РµР№ РјР°С” Р±СѓС‚Рё Р±С–Р»СЊС€РѕСЋ Р·Р° РЅСѓР»СЊ.', 16, 1);
                 RETURN;
             END;
 
@@ -126,7 +126,7 @@ BEGIN
             WHERE order_id = @order_id;
 
             IF @@ROWCOUNT = 0
-                RAISERROR(N'Замовлення з таким ID не знайдено.', 16, 1);
+                RAISERROR(N'Р—Р°РјРѕРІР»РµРЅРЅСЏ Р· С‚Р°РєРёРј ID РЅРµ Р·РЅР°Р№РґРµРЅРѕ.', 16, 1);
         END
     END TRY
     BEGIN CATCH
@@ -173,19 +173,19 @@ BEGIN
         BEGIN
             IF (@name IS NULL OR LTRIM(RTRIM(@name)) = '')
             BEGIN
-                RAISERROR(N'Назва продукту є обов''язковою.', 16, 1);
+                RAISERROR(N'РќР°Р·РІР° РїСЂРѕРґСѓРєС‚Сѓ С” РѕР±РѕРІ''СЏР·РєРѕРІРѕСЋ.', 16, 1);
                 RETURN;
             END;
 
             IF (@price IS NULL OR @price < 0)
             BEGIN
-                RAISERROR(N'Ціна продукту не може бути від''ємною.', 16, 1);
+                RAISERROR(N'Р¦С–РЅР° РїСЂРѕРґСѓРєС‚Сѓ РЅРµ РјРѕР¶Рµ Р±СѓС‚Рё РІС–Рґ''С”РјРЅРѕСЋ.', 16, 1);
                 RETURN;
             END;
 
             IF (@quantity IS NULL OR @quantity < 0)
             BEGIN
-                RAISERROR(N'Кількість продукту не може бути від''ємною.', 16, 1);
+                RAISERROR(N'РљС–Р»СЊРєС–СЃС‚СЊ РїСЂРѕРґСѓРєС‚Сѓ РЅРµ РјРѕР¶Рµ Р±СѓС‚Рё РІС–Рґ''С”РјРЅРѕСЋ.', 16, 1);
                 RETURN;
             END;
 
@@ -205,7 +205,7 @@ BEGIN
             WHERE product_id = @product_id;
 
             IF @@ROWCOUNT = 0
-                RAISERROR(N'Продукт з таким ID не знайдено.', 16, 1);
+                RAISERROR(N'РџСЂРѕРґСѓРєС‚ Р· С‚Р°РєРёРј ID РЅРµ Р·РЅР°Р№РґРµРЅРѕ.', 16, 1);
         END
     END TRY
     BEGIN CATCH
@@ -214,20 +214,20 @@ BEGIN
 END;
 GO
 
--- Додавання нового продукту
+-- Р”РѕРґР°РІР°РЅРЅСЏ РЅРѕРІРѕРіРѕ РїСЂРѕРґСѓРєС‚Сѓ
 DECLARE @NewProductId INT;
 
 EXEC dbo.sp_SetProductsList
     @product_id  = @NewProductId OUTPUT,
-    @name        = N'Тестовий продукт',
+    @name        = N'РўРµСЃС‚РѕРІРёР№ РїСЂРѕРґСѓРєС‚',
     @price       = 100.00,
     @quantity    = 20,
-    @supplier_id = 1,   -- існуючий постачальник
-    @unit_id     = 2;   -- існуюча одиниця вимірювання
+    @supplier_id = 1,   -- С–СЃРЅСѓСЋС‡РёР№ РїРѕСЃС‚Р°С‡Р°Р»СЊРЅРёРє
+    @unit_id     = 2;   -- С–СЃРЅСѓСЋС‡Р° РѕРґРёРЅРёС†СЏ РІРёРјС–СЂСЋРІР°РЅРЅСЏ
 
 SELECT @NewProductId AS NewProductId;
 
--- Оновлення кількості та ціни продукту
+-- РћРЅРѕРІР»РµРЅРЅСЏ РєС–Р»СЊРєРѕСЃС‚С– С‚Р° С†С–РЅРё РїСЂРѕРґСѓРєС‚Сѓ
 DECLARE @NewProductId INT = 24;
 EXEC dbo.sp_SetProductsList
     @product_id = @NewProductId OUTPUT,
@@ -247,36 +247,36 @@ BEGIN
     SET NOCOUNT ON;
 
     BEGIN TRY
-        -- INSERT (якщо @customer_id = NULL)
+        -- INSERT (СЏРєС‰Рѕ @customer_id = NULL)
         IF @customer_id IS NULL
         BEGIN
-            -- Перевірка обов'язкового поля name
+            -- РџРµСЂРµРІС–СЂРєР° РѕР±РѕРІ'СЏР·РєРѕРІРѕРіРѕ РїРѕР»СЏ name
             IF @name IS NULL OR LTRIM(RTRIM(@name)) = N''
             BEGIN
-                RAISERROR(N'Ім''я клієнта (name) є обов''язковим.', 16, 1);
+                RAISERROR(N'Р†Рј''СЏ РєР»С–С”РЅС‚Р° (name) С” РѕР±РѕРІ''СЏР·РєРѕРІРёРј.', 16, 1);
                 RETURN;
             END;
 
-            -- Якщо не передали created_at – ставимо поточну дату/час
+            -- РЇРєС‰Рѕ РЅРµ РїРµСЂРµРґР°Р»Рё created_at вЂ“ СЃС‚Р°РІРёРјРѕ РїРѕС‚РѕС‡РЅСѓ РґР°С‚Сѓ/С‡Р°СЃ
             IF @created_at IS NULL
                 SET @created_at = GETDATE();
 
             INSERT INTO dbo.Customer (name, contact_phone, created_at)
             VALUES (@name, @contact_phone, @created_at);
 
-            -- Повертаємо згенерований IDENTITY
+            -- РџРѕРІРµСЂС‚Р°С”РјРѕ Р·РіРµРЅРµСЂРѕРІР°РЅРёР№ IDENTITY
             SET @customer_id = SCOPE_IDENTITY();
         END
         ELSE
         BEGIN
-            -- Перевірка, що такий клієнт існує
+            -- РџРµСЂРµРІС–СЂРєР°, С‰Рѕ С‚Р°РєРёР№ РєР»С–С”РЅС‚ С–СЃРЅСѓС”
             IF NOT EXISTS (SELECT 1 FROM dbo.Customer WHERE customer_id = @customer_id)
             BEGIN
-                RAISERROR(N'Клієнта з таким ID не існує.', 16, 1);
+                RAISERROR(N'РљР»С–С”РЅС‚Р° Р· С‚Р°РєРёРј ID РЅРµ С–СЃРЅСѓС”.', 16, 1);
                 RETURN;
             END;
 
-            -- UPDATE: оновлюємо тільки ті поля, які передані не NULL
+            -- UPDATE: РѕРЅРѕРІР»СЋС”РјРѕ С‚С–Р»СЊРєРё С‚С– РїРѕР»СЏ, СЏРєС– РїРµСЂРµРґР°РЅС– РЅРµ NULL
             UPDATE TOP (1) dbo.Customer
             SET name          = ISNULL(@name,          name),
                 contact_phone = ISNULL(@contact_phone, contact_phone),
@@ -300,7 +300,7 @@ DECLARE @NewCustomerId INT;
 
 EXEC dbo.sp_SetCustomer
     @customer_id   = @NewCustomerId OUTPUT,
-    @name          = N'Іван Петренко',
+    @name          = N'Р†РІР°РЅ РџРµС‚СЂРµРЅРєРѕ',
     @contact_phone = N'+380501112233',
     @created_at    = NULL;
 
@@ -310,6 +310,6 @@ DECLARE @ExistingCustomerId INT = 34;
 
 EXEC dbo.sp_SetCustomer
     @customer_id   = @ExistingCustomerId OUTPUT,
-    @name          = N'Тестовий клієнт',
+    @name          = N'РўРµСЃС‚РѕРІРёР№ РєР»С–С”РЅС‚',
     @contact_phone = N'+380671234187',
     @created_at    = NULL;
